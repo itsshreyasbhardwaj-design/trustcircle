@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      # Test-only values. The suite sets its own, but the build also needs a secret
+      # present. Neither is a real key and neither is used outside CI.
+      TRUSTCIRCLE_SECRET: ci-only-secret-value-not-used-anywhere-0123456789
+      TRUSTCIRCLE_SCRYPT_N: '4096'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # node:sqlite, the built-in database driver, needs Node 24.
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev
+
+      - name: Migrations apply cleanly from empty
+        run: npm run db:migrate
+
+      - name: Demo seed is reproducible
+        run: npm run db:seed-demo
