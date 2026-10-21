@@ -10,3 +10,6 @@ data/*.db-*
 test-results
 public/ocr
 /data
+
+# tesseract.js caches decompressed language data in the working directory
+*.traineddata
