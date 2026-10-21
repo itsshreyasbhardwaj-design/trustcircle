@@ -1,5 +1,10 @@
 # TrustCircle
 
+[![CI](https://github.com/itsshreyasbhardwaj-design/trustcircle/actions/workflows/ci.yml/badge.svg)](https://github.com/itsshreyasbhardwaj-design/trustcircle/actions/workflows/ci.yml)
+[![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+[![Node 24](https://img.shields.io/badge/node-24.x-5a5?logo=node.js&logoColor=white)](https://nodejs.org)
+[![no API keys](https://img.shields.io/badge/API%20keys-none%20required-0d9488)](ENVIRONMENT.md)
+
 **Think twice. Stay protected. Together.**
 
 A family digital-safety application for India. It checks suspicious messages, links,
@@ -25,6 +30,8 @@ no percentage, and no reviewer button that clears a message.
 ## Quick start
 
 ```bash
+git clone https://github.com/itsshreyasbhardwaj-design/trustcircle.git
+cd trustcircle
 npm install
 npm run setup:secret     # writes TRUSTCIRCLE_SECRET to .env.local
 npm run setup:assets     # copies the local OCR engine into public/ocr
@@ -110,6 +117,17 @@ If money has already left your account, do not start with a scan: call your bank
 then call **1930**, then file at **cybercrime.gov.in**.
 
 ---
+
+## Contributing
+
+The most valuable thing you can report is a way for one account to read another's
+cases, for revoked access to still work, or for a credential to reach storage
+unredacted. Open an issue with steps to reproduce — and without anyone's real message
+content. See [SECURITY.md](SECURITY.md).
+
+Pull requests that add a safety verdict, a confidence score, a monitoring mode, or a
+"mark as safe" action will be declined. Those are the four things this product is built
+not to do.
 
 ## Status
 
