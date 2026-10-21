@@ -314,6 +314,35 @@ describe('malformed and hostile files', () => {
   });
 });
 
+describe('the image never leaves the device', () => {
+  it('gives the file inputs no name, so a form submission cannot carry the image', async () => {
+    const src = await import('node:fs').then((fs) =>
+      fs.readFileSync(new URL('../components/image-tools.tsx', import.meta.url), 'utf8'),
+    );
+    // A file input without a `name` cannot be serialised into a form submission.
+    // Verified in a real browser too: form.elements reports name === null for it.
+    for (const id of ['screenshot', 'qr-image']) {
+      const tag = src.slice(src.indexOf(`id="${id}"`));
+      const end = tag.indexOf('/>');
+      expect(tag.slice(0, end), `${id} must not be given a name`).not.toMatch(/\bname=/);
+    }
+  });
+
+  it('never posts the image: no fetch, FormData or upload in the image component', async () => {
+    const src = await import('node:fs').then((fs) =>
+      fs.readFileSync(new URL('../components/image-tools.tsx', import.meta.url), 'utf8'),
+    );
+    expect(src).not.toMatch(/\bfetch\s*\(|new FormData|XMLHttpRequest|navigator\.sendBeacon/);
+  });
+
+  it('accepts no server action that takes a file for scanning', async () => {
+    const src = await import('node:fs').then((fs) =>
+      fs.readFileSync(new URL('../app/actions/scan.ts', import.meta.url), 'utf8'),
+    );
+    expect(src).not.toMatch(/instanceof File|\.arrayBuffer\(/);
+  });
+});
+
 describe('result wording, under every input', () => {
   it('never promises safety, in any outcome', () => {
     for (const content of [

@@ -8,8 +8,15 @@ const PATTERNS: Array<{ type: ClaimType; re: RegExp; weight: number }> = [
   { type: 'job', re: /\b(?:job|vacancy|hiring|recruit\w*|interview|offer\s+letter|salary|work\s+from\s+home|internship|part[-\s]?time)\b/gi, weight: 2 },
   { type: 'shopping', re: /\b(?:order\s*(?:id|no|number)?|cart|checkout|invoice|return|exchange|cod|cash\s+on\s+delivery|flash\s+sale|coupon)\b/gi, weight: 2 },
   { type: 'utility', re: /\b(?:electricity|bijli|power\s+bill|meter|gas\s+(?:bill|connection)|water\s+bill|broadband|postpaid\s+bill|recharge\s+(?:due|expir)|बिजली)\b/giu, weight: 2 },
-  { type: 'acquaintance', re: /\b(?:new\s+number|changed\s+my\s+number|this\s+is\s+(?:your\s+)?(?:son|daughter|mummy|papa|beta|bhai|didi|uncle|aunty)|friend|cousin)\b/gi, weight: 3 },
-  { type: 'institution', re: /\b(?:income\s*tax|gst|rbi|uidai|aadhaar|epfo|pan\s+card|trai|police|court|municipal|passport|election\s+commission|scholarship|subsidy)\b/gi, weight: 3 },
+  // Impersonation outranks the payment rail it asks you to use: "this is me on my
+  // new number, send to this UPI" needs the plan that says ring them on the number
+  // you already had, not the one about confirming a payee.
+  { type: 'acquaintance', re: /\b(?:friend|cousin|relative)\b/gi, weight: 2 },
+  { type: 'acquaintance', re: /\b(?:new\s+number|changed\s+my\s+number|naya\s+number|this\s+is\s+me|this\s+is\s+(?:your\s+)?(?:son|daughter|mummy|papa|beta|bhai|didi|uncle|aunty))\b/gi, weight: 6 },
+  // Law-enforcement framing outweighs an incidental noun: the "parcel" in a
+  // digital-arrest script is set dressing, not what the message is about.
+  { type: 'institution', re: /\b(?:income\s*tax|gst|rbi|uidai|aadhaar|epfo|pan\s+card|trai|municipal|passport|election\s+commission|scholarship|subsidy)\b/gi, weight: 3 },
+  { type: 'institution', re: /\b(?:police|cyber\s*cell|cbi|inspector|f\.?i\.?r\.?|warrant|arrest|court\s+(?:case|notice|summons)|narcotics|money\s+laundering|enforcement\s+directorate|digital\s+arrest)\b/gi, weight: 6 },
 ];
 
 /** Picks the claim type with the strongest keyword evidence; 'unknown' when nothing scores. */

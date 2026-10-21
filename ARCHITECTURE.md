@@ -154,6 +154,18 @@ alternative and needs no build step. The stored hash records its own algorithm a
 parameters, so adding argon2id later is additive and does not invalidate existing
 hashes.
 
+## Two Next.js behaviours worth knowing about
+
+**A route-level `loading.tsx` makes `notFound()` return 200.** A Suspense boundary
+flushes the shell — and the status — before the page finishes, so a later `notFound()`
+cannot change it. In this app "not found" is the privacy answer for an unauthorised
+resource, so it deserves a real 404; the route-group `loading.tsx` was removed to get
+one. Skeleton components still exist for in-page Suspense.
+
+**`middleware.ts` whose matcher includes `/_not-found` breaks the build** with
+`Invariant: no direct app page entry found for /_not-found`. The matcher excludes it
+explicitly. Worth knowing before spending an afternoon on it.
+
 ## Migration path to production
 
 The seams are already in place: SQL is plain and ORM-free (PostgreSQL swap is a

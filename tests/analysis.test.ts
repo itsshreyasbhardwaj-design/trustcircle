@@ -178,6 +178,18 @@ describe('claim classification', () => {
     expect(classifyClaim('Your parcel delivery failed, courier shipment tracking AWB 889')).toBe('delivery');
     expect(classifyClaim('Papa this is my new number, I am your son')).toBe('acquaintance');
     expect(classifyClaim('Income tax department notice, PAN card, GST')).toBe('institution');
+    // A digital-arrest script mentions a parcel, but it is not about a delivery.
+    expect(
+      classifyClaim(
+        'This is Inspector from Cyber Cell. A parcel in your name contained illegal items. An FIR is being registered and a non-bailable warrant will be issued.',
+      ),
+    ).toBe('institution');
+    // Impersonation outranks the payment rail it asks you to use.
+    expect(
+      classifyClaim(
+        'Papa, this is me. My phone fell in water so this is my new number. Send Rs 24,000 on this UPI: someone@okexample',
+      ),
+    ).toBe('acquaintance');
     expect(classifyClaim('hello')).toBe('unknown');
   });
 
