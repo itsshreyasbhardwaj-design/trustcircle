@@ -218,8 +218,9 @@ export default function HomePage() {
                 ['Your sister', 'Opens the case. She sees the findings, and the message because you allowed it.'],
                 ['Her response', '"I see warning signs — the link is not the bank\'s domain. Do not call that number."'],
                 ['You', 'Close the review. Her access ends the moment you do.'],
-              ].map(([who, what]) => (
-                <li key={who} className="rounded-xl border border-[var(--border)] bg-[var(--bg-sunken)] p-3.5">
+              ].map(([who, what], i) => (
+                // Keyed by position: "You" appears twice in this exchange.
+                <li key={`${i}-${who}`} className="rounded-xl border border-[var(--border)] bg-[var(--bg-sunken)] p-3.5">
                   <p className="text-xs font-semibold uppercase tracking-wide text-[var(--fg-subtle)]">{who}</p>
                   <p className="mt-1 text-[var(--fg-muted)]">{what}</p>
                 </li>

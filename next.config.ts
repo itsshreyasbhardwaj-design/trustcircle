@@ -35,7 +35,9 @@ const config: NextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' blob: data:",
               "font-src 'self'",
-              "connect-src 'self' blob:",
+              // `data:` is required because the OCR engine loads its WebAssembly
+              // module from a self-contained data: URI. It opens no network channel.
+              "connect-src 'self' blob: data:",
               "worker-src 'self' blob:",
               "frame-ancestors 'none'",
               "base-uri 'none'",
