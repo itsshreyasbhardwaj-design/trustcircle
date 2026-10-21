@@ -100,12 +100,31 @@ $ npm test
 $ npm run typecheck
 (no output — clean)
 
-$ npm audit
+$ npm run lint
+(no output — clean)
+
+$ npm run build
+✓ Compiled successfully — 37 routes + 2 API routes
+  First Load JS shared by all: 103 kB
+
+$ npm audit --omit=dev
 found 0 vulnerabilities
+
+$ npm audit
+5 high severity vulnerabilities
 ```
 
-`postcss` and `sharp` are pinned forward through `overrides` in `package.json`; without
-those, transitive advisories are reported.
+**On the audit numbers.** Production dependencies are clean. `postcss` and `sharp` are
+pinned forward through `overrides` in `package.json`; without those, transitive
+advisories are reported against both.
+
+The five remaining advisories are all `braces@3.0.3`, reached only through
+`eslint-config-next → @next/eslint-plugin-next → fast-glob → micromatch`. It is a
+**lint-time dev dependency**: it matches glob patterns against this repository's own
+file paths, it is not in the production bundle, and no user input reaches it. 3.0.3 is
+the latest published version, so there is no upgrade that clears it — `npm audit fix
+--force` would downgrade `eslint-config-next` instead. Recorded here rather than
+hidden, and tracked in ROADMAP.md under dependency monitoring.
 
 ## Not done
 

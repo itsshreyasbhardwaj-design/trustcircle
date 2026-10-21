@@ -107,8 +107,12 @@ deferred work in ROADMAP.md.
    write access can edit it.
 9. **No brute-force protection on the recovery code** beyond the general login limiter,
    because no recovery flow is wired up yet.
-10. **Dependency supply chain.** `npm audit` reports zero vulnerabilities at the pinned
-    versions, with `postcss` and `sharp` pinned up via overrides. There is no lockfile
+10. **Dependency supply chain.** `npm audit --omit=dev` reports zero vulnerabilities;
+    `postcss` and `sharp` are pinned forward through `overrides`. Including dev
+    dependencies, five high advisories remain, all `braces@3.0.3` reached through
+    `eslint-config-next`. It runs at lint time against this repository's own file
+    paths, is absent from the production bundle, and 3.0.3 is the latest published
+    version — there is no upgrade that clears it. There is also no lockfile
     attestation, no SBOM and no automated dependency monitoring.
 11. **Single-instance assumptions.** The rate limiter and the database are per-host.
     Horizontal scaling would need both replaced.

@@ -52,7 +52,6 @@ function syncLessons(db: DatabaseSync): void {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
   var __trustcircle_db: DatabaseSync | undefined;
 }
 
