@@ -23,15 +23,15 @@
     "jsqr": "^1.4.0",
     "lucide-react": "^0.544.0",
     "next": "^15.5.4",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "server-only": "^0.0.1",
     "tesseract.js": "^6.0.1",
     "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.7",
-    "@tailwindcss/postcss": "^4.1.13",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
